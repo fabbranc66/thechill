@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 100 100"
+>
+  <!-- corpo arancia -->
+  <circle cx="50" cy="55" r="38" fill="#f47b20"/>
+
+  <!-- sfumatura luce -->
+  <ellipse cx="38" cy="42" rx="14" ry="10" fill="#ff9a3c" opacity="0.6"/>
+
+  <!-- picciolo -->
+  <rect x="47" y="10" width="6" height="10" rx="2" fill="#6b8e23"/>
+
+  <!-- foglia -->
+  <path
+    d="M50 12
+       C65 5, 85 15, 70 25
+       C60 30, 50 22, 50 12
+       Z"
+    fill="#3c9d23"
+  />
+</svg>

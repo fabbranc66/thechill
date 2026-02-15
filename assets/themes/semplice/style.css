@@ -1,0 +1,383 @@
+/* ======================================================
+   RESET / BASE
+====================================================== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  background: #f4f4f4;
+  color: #222;
+}
+
+/* ======================================================
+   HEADER / FOOTER
+====================================================== */
+.site-logo {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+.site-header {
+  background: #0b3d2e;
+  color: #fff;
+  padding: 12px 0;
+}
+
+.site-header a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  margin-right: 12px;
+}
+
+.site-footer {
+  background: #222;
+  color: #ccc;
+  text-align: center;
+  padding: 12px;
+  margin-top: 40px;
+}
+
+/* ======================================================
+   LAYOUT
+====================================================== */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.content {
+  padding: 20px;
+}
+
+/* ======================================================
+   DASHBOARD – STATISTICHE
+   MOBILE FIRST: 3 per riga
+====================================================== */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.stats .box {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 6px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.25;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.stats .box strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* ======================================================
+   MAIN ACTION – STRUTTURA CORRETTA
+====================================================== */
+.main-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* mobile: 2 per riga */
+  gap: 12px;
+  margin: 15px 0;
+}
+
+.main-actions .btn-nuova-carta {
+  display: block;
+  width: 100%;
+  padding: 12px 10px;
+  background: #0b3d2e;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* ======================================================
+   SWITCH (ON / OFF)
+====================================================== */
+.switch {
+  margin: 15px 0;
+}
+
+.switch a {
+  display: inline-block;
+  padding: 8px 14px;
+  background: #ddd;
+  color: #222;
+  border-radius: 8px;
+  margin-right: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.switch a.on {
+  background: #0b3d2e;
+  color: #fff;
+}
+
+/* ======================================================
+   TABELLE
+====================================================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+td, th {
+  border: 1px solid #ccc;
+  padding: 6px;
+  font-size: 13px;
+}
+
+/* ======================================================
+   CARD CLIENTE / SCAN
+====================================================== */
+.card {
+  max-width: 420px;
+  margin: 20px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.punti {
+  font-size: 48px;
+  font-weight: 700;
+  color: #0b3d2e;
+}
+
+.label {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.qr img {
+  width: 180px;
+  height: 180px;
+}
+
+.stat {
+  margin: 12px 0;
+  font-size: 15px;
+  color: #444;
+}
+
+.codice {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #777;
+  word-break: break-all;
+}
+
+/* ======================================================
+   ALERT
+====================================================== */
+.alert-premio,
+.alert-premi-possibili {
+  background: #e8f5e9;
+  border: 2px solid #2e7d32;
+  padding: 14px;
+  border-radius: 10px;
+  margin: 16px 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ======================================================
+   DESKTOP
+====================================================== */
+@media (min-width: 769px) {
+
+  .stats {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .main-actions {
+    grid-template-columns: repeat(4, auto);
+  }
+
+  .main-actions .btn-nuova-carta {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+}
+/* ======================================================
+   SCANNER CASSA (QR)
+====================================================== */
+
+#scanner-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+#qr-reader {
+  width: 240px;
+}
+
+#qr-reader video {
+  width: 240px !important;
+  height: 240px !important;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 3px solid #2ecc71;
+  box-shadow: 0 0 8px rgba(0,0,0,.15);
+}
+
+#msg {
+  text-align: center;
+  font-size: 16px;
+  min-height: 60px;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+/* Nasconde UI interna html5-qrcode */
+#qr-reader__dashboard,
+#qr-reader__dashboard_section_swaplink,
+#qr-reader__dashboard_section_csr,
+#qr-reader__dashboard_section_fsr {
+  display: none !important;
+}
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.gallery img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+/* ===============================
+   TAVOLI – STILE UNIFICATO
+================================ */
+.tavolo {
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform .1s ease, box-shadow .1s ease;
+}
+
+.tavolo:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+}
+
+/* STATI */
+.tavolo.libero {
+  background: #dff5e1;      /* verde chiaro */
+}
+
+.tavolo.prenotato {
+  background: #ffe6c9;      /* arancione chiaro */
+  cursor: not-allowed;
+}
+
+.tavolo.occupato {
+  background: #ffd6d6;      /* rosso chiaro */
+  cursor: not-allowed;
+  opacity: .7;
+}
+.gallery blockquote.instagram-media {
+  max-width: 100% !important;
+  min-width: unset !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+.gallery iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+}
+/* ======================================================
+   MEDIA GRID – GALLERY PUBBLICA
+====================================================== */
+
+.media-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 220px 220px;
+  gap: 16px;
+  max-width: 1000px;
+  margin: 20px auto;
+}
+
+/* riquadro generico */
+.media {
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* riquadro grande (playlist video mp4) */
+.media.video-loop {
+  grid-row: span 2;
+}
+
+/* contenuti */
+.media img,
+.media video,
+.media iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ======================================================
+   MOBILE
+====================================================== */
+@media (max-width: 768px) {
+
+  .media-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .media.video-loop {
+    height: 220px;
+  }
+
+  .media {
+    height: 180px;
+  }
+}
+/* ======================================================
+   PULSANTI
+====================================================== */
+.btn-delete svg {
+  color: #666;
+  transition: 0.2s;
+}
+
+.btn-delete:hover svg {
+  color: #c0392b;
+}

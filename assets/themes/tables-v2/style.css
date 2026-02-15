@@ -1,0 +1,61 @@
+/* BASE */
+.tavolo {
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 6px 14px rgba(0,0,0,.08);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.tavolo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0,0,0,.12);
+}
+
+/* STATI → SOLO SFONDO */
+.tavolo.libero {
+  background-color: #eafaf1;   /* verde chiaro */
+}
+
+.tavolo.prenotato {
+  background-color: #fff4e6;   /* arancione chiaro */
+}
+
+.tavolo.occupato {
+  background-color: #fdecea;   /* rosso chiaro */
+}
+
+/* TESTO */
+.tavolo h3 {
+  margin: 0 0 .3rem 0;
+  font-size: 1.1rem;
+}
+
+.tavolo .posti {
+  font-size: .9rem;
+  opacity: .75;
+}
+
+.tavolo strong {
+  display: inline-block;
+  margin-top: .3rem;
+  font-size: .8rem;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: rgba(0,0,0,.08);
+}
+
+/* AZIONI */
+.azioni {
+  margin-top: .6rem;
+  display: flex;
+  gap: .4rem;
+}
+
+.azioni button {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: .4rem .6rem;
+  font-size: .85rem;
+  cursor: pointer;
+}
