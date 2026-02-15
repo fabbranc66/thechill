@@ -44,9 +44,26 @@ require ROOT_PATH . '/themes/semplice/header.php';
 
 <div class="main-actions">
   <a href="?mod=carte&azione=nuova" class="btn-nuova-carta">➕ Nuova carta</a>
-<a href="<?= BASE_URL ?>/?mod=clienti&azione=edit&id=0" class="btn-nuova-carta">
-    ➕ Nuovo cliente
-</a>
+  <a href="<?= BASE_URL ?>/?mod=clienti&azione=edit&id=0" class="btn-nuova-carta">
+      ➕ Nuovo cliente
+  </a>
+
+  <?php
+  $scanner_desktop = $SETTINGS['scanner_desktop'] ?? '0';
+
+  $mostra_scanner =
+      (
+          is_mobile_device() ||
+          $scanner_desktop === '1'
+      );
+  ?>
+
+  <?php if ($mostra_scanner): ?>
+    <a href="<?= BASE_URL ?>/?mod=scansioni&vista=cassa" class="btn-nuova-carta">
+        📲 Scanner
+    </a>
+  <?php endif; ?>
+
   <a href="?mod=premi" class="btn-nuova-carta">🎁 Gestione premi</a>
   <a href="?mod=admin&azione=impostazioni" class="btn-nuova-carta">⚙️ Impostazioni</a>
 </div>

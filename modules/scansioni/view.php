@@ -8,8 +8,11 @@ declare(strict_types=1);
 /* esegue logica */
 require __DIR__ . '/actions.php';
 
-/* solo mobile */
-if (!is_mobile_device()) {
+/* recupero setting scanner desktop */
+$scanner_desktop = $SETTINGS['scanner_desktop'] ?? '0';
+
+/* se non mobile e scanner desktop disattivato → blocco */
+if (!is_mobile_device() && $scanner_desktop !== '1') {
 
     $titolo = 'Scanner';
     require ROOT_PATH . '/themes/semplice/header.php';
@@ -23,5 +26,11 @@ if (!is_mobile_device()) {
     return;
 }
 
-/* su mobile carica scanner kiosk */
-require __DIR__ . '/view_kiosk.php';
+/* routing vista */
+$vista = $_GET['vista'] ?? 'kiosk';
+
+if ($vista === 'cassa') {
+    require __DIR__ . '/view_cassa.php';
+} else {
+    require __DIR__ . '/view_kiosk.php';
+}

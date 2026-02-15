@@ -124,16 +124,3 @@ $stmt = $pdo->query("SELECT nome, valore FROM settings");
 foreach ($stmt as $row) {
   $SETTINGS[$row['nome']] = $row['valore'];
 }
-/* =====================================================
-   UTILS
-===================================================== */
-if (!function_exists('is_mobile_device')) {
-  function is_mobile_device(): bool {
-    $ua = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
-
-    return preg_match(
-      '/android|iphone|ipad|ipod|mobile|opera mini|iemobile/',
-      $ua
-    ) === 1;
-  }
-}

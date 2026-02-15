@@ -102,22 +102,22 @@ require ROOT_PATH . '/themes/semplice/header.php';
   <!-- LOGO -->
   <tr>
     <td>Logo sito</td>
-<td>
-  <form method="post" enctype="multipart/form-data" class="inline-form">
-    <input type="hidden" name="upload" value="logo">
+    <td>
+      <form method="post" enctype="multipart/form-data" class="inline-form">
+        <input type="hidden" name="upload" value="logo">
 
-    <div class="field-inline">
-      <input type="file" name="file" accept="image/*">
+        <div class="field-inline">
+          <input type="file" name="file" accept="image/*">
 
-      <?php if (!empty($SETTINGS['logo'])): ?>
-        <img
-          src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($SETTINGS['logo']) ?>"
-          class="preview preview-logo"
-          alt="Logo"
-        >
-      <?php endif; ?>
-    </div>
-</td>
+          <?php if (!empty($SETTINGS['logo'])): ?>
+            <img
+              src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($SETTINGS['logo']) ?>"
+              class="preview preview-logo"
+              alt="Logo"
+            >
+          <?php endif; ?>
+        </div>
+    </td>
     <td>
         <button type="submit">💾 Carica</button>
       </form>
@@ -127,29 +127,93 @@ require ROOT_PATH . '/themes/semplice/header.php';
   <!-- FAVICON -->
   <tr>
     <td>Favicon</td>
-<td>
-  <form method="post" enctype="multipart/form-data" class="inline-form">
-    <input type="hidden" name="upload" value="favicon">
+    <td>
+      <form method="post" enctype="multipart/form-data" class="inline-form">
+        <input type="hidden" name="upload" value="favicon">
 
-    <div class="field-inline">
-      <input type="file" name="file" accept=".ico,.png,.svg">
+        <div class="field-inline">
+          <input type="file" name="file" accept=".ico,.png,.svg">
 
-      <?php if (!empty($SETTINGS['favicon'])): ?>
-        <img
-          src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($SETTINGS['favicon']) ?>"
-          class="preview preview-favicon"
-          alt="Favicon"
-        >
-      <?php endif; ?>
-    </div>
-</td>
+          <?php if (!empty($SETTINGS['favicon'])): ?>
+            <img
+              src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($SETTINGS['favicon']) ?>"
+              class="preview preview-favicon"
+              alt="Favicon"
+            >
+          <?php endif; ?>
+        </div>
+    </td>
     <td>
         <button type="submit">💾 Carica</button>
       </form>
     </td>
   </tr>
 
+  <!-- SCANNER DA DESKTOP -->
+  <tr>
+    <td>Scanner da PC/Tablet</td>
+    <td>
+      <form method="post">
+        <input type="hidden" name="key" value="scanner_desktop">
+        <select name="value">
+          <option value="0"
+            <?= (($SETTINGS['scanner_desktop'] ?? '0') === '0') ? 'selected' : '' ?>>
+            Solo da cellulare
+          </option>
+          <option value="1"
+            <?= (($SETTINGS['scanner_desktop'] ?? '0') === '1') ? 'selected' : '' ?>>
+            Abilitato anche su PC/Tablet
+          </option>
+        </select>
+    </td>
+    <td>
+        <button type="submit">💾 Salva</button>
+      </form>
+    </td>
+  </tr>
 </table>
+
+<?php
+/* ===============================
+   ALTRE IMPOSTAZIONI DINAMICHE
+================================ */
+$stmt = $pdo->query(
+  "SELECT nome, valore
+   FROM settings
+   WHERE nome NOT IN ('site_name','logo','favicon','scanner_desktop')
+   ORDER BY nome"
+);
+$altre = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<?php if ($altre): ?>
+<br>
+<h3>Altre impostazioni</h3>
+
+<table class="settings-table">
+  <tr>
+    <th>Chiave</th>
+    <th>Valore</th>
+    <th>Azione</th>
+  </tr>
+
+  <?php foreach ($altre as $s): ?>
+    <tr>
+      <td><?= htmlspecialchars($s['nome']) ?></td>
+      <td>
+        <form method="post">
+          <input type="hidden" name="key" value="<?= htmlspecialchars($s['nome']) ?>">
+          <input type="text" name="value"
+                 value="<?= htmlspecialchars($s['valore']) ?>">
+      </td>
+      <td>
+          <button type="submit">💾 Salva</button>
+        </form>
+      </td>
+    </tr>
+  <?php endforeach; ?>
+</table>
+<?php endif; ?>
 
 <style>
 .settings-table {
@@ -178,14 +242,12 @@ require ROOT_PATH . '/themes/semplice/header.php';
   padding: 6px 10px;
 }
 
-/* contenitore inline */
 .field-inline {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* anteprime immagini */
 .preview {
   max-height: 28px;
   width: auto;

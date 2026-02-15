@@ -7,12 +7,10 @@ declare(strict_types=1);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['codice'])) {
 
-    header('Content-Type: application/json');
-
     $codice = trim($_POST['codice']);
 
     if ($codice === '') {
-        echo json_encode(['ok' => false, 'msg' => 'Codice vuoto']);
+        header('Location: ?mod=scansioni&vista=cassa&err=Codice vuoto');
         exit;
     }
 
@@ -23,13 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['codice'])) {
     }
 
     if ($codice === '') {
-        echo json_encode(['ok' => false, 'msg' => 'Token non valido']);
+        header('Location: ?mod=scansioni&vista=cassa&err=Token non valido');
         exit;
     }
 
-    /* recupera carta */
+    /* recupera carta e cliente */
     $stmt = $pdo->prepare(
-        "SELECT c.id, c.punti, u.nome
+        "SELECT c.id AS carta_id, u.nome, u.token_accesso
          FROM carte_fedelta c
          JOIN utenti u ON u.id = c.utente_id
          WHERE u.token_accesso = ?
@@ -40,35 +38,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['codice'])) {
     $carta = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$carta) {
-        echo json_encode(['ok' => false, 'msg' => 'Carta non trovata']);
+        header('Location: ?mod=scansioni&vista=cassa&err=Carta non trovata');
         exit;
     }
+
+    /* punti da impostazioni */
+    $punti_aggiunti = (int)($SETTINGS['incremento_scansione'] ?? 1);
 
     try {
         $pdo->beginTransaction();
 
-        /* incremento punti (placeholder) */
+        /* aggiorna punti */
         $pdo->prepare(
             "UPDATE carte_fedelta
-             SET punti = punti + 1
+             SET punti = punti + ?
              WHERE id = ?"
-        )->execute([$carta['id']]);
+        )->execute([$punti_aggiunti, $carta['carta_id']]);
 
         /* log scansione */
         $pdo->prepare(
-            "INSERT INTO log_scansioni (carta_id, punti, origine)
-             VALUES (?, 1, 'scanner')"
-        )->execute([$carta['id']]);
-
-        /* placeholder gratta */
-        $msg = 'Scansione registrata per ' . $carta['nome'] . ' (+1 punto)';
+            "INSERT INTO log_scansioni
+             (carta_id, punti, origine, data_scansione)
+             VALUES (?, ?, 'scanner', NOW())"
+        )->execute([$carta['carta_id'], $punti_aggiunti]);
 
         $pdo->commit();
 
-        echo json_encode([
-            'ok' => true,
-            'msg' => $msg
-        ]);
+        /* redirect alla pagina cliente */
+        header('Location: ' . BASE_URL . '/?mod=clienti&azione=cliente&t=' . $carta['token_accesso']);
+        exit;
 
     } catch (Throwable $e) {
 
@@ -76,11 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['codice'])) {
             $pdo->rollBack();
         }
 
-        echo json_encode([
-            'ok' => false,
-            'msg' => 'Errore scansione'
-        ]);
+        header('Location: ?mod=scansioni&vista=cassa&err=Errore scansione');
+        exit;
     }
-
-    exit;
 }

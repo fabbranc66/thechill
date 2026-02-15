@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $val = $pdo->query(
     "SELECT nome, valore
-     FROM impostazioni
+     FROM settingss
      WHERE nome IN (
         'gratta_attivo',
         'gratta_probabilita',

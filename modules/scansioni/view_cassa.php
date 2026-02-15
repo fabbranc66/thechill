@@ -1,6 +1,24 @@
 <?php
 declare(strict_types=1);
 
+richiedi_ruolo('amministratore');
+
+/* recupero setting scanner desktop */
+$stmt = $pdo->prepare(
+    "SELECT valore FROM settings WHERE nome = 'scanner_desktop' LIMIT 1"
+);
+$stmt->execute();
+$scanner_desktop = (string)($stmt->fetchColumn() ?? '0');
+
+/* se abilitato, consenti sempre accesso */
+if ($scanner_desktop !== '1') {
+    if (!is_mobile_device()) {
+        echo '<h2>Scanner nn disponibile</h2>';
+        echo '<p>Lo scanner è utilizzabile solo da dispositivo mobile.</p>';
+        exit;
+    }
+}
+
 $titolo = 'Scanner';
 require ROOT_PATH . '/themes/semplice/header.php';
 ?>
@@ -37,17 +55,33 @@ function onScanSuccess(decodedText) {
 const html5QrCode = new Html5Qrcode("qr-reader");
 
 Html5Qrcode.getCameras().then(devices => {
-    if (devices && devices.length) {
-        html5QrCode.start(
-            devices[0].id,
-            {
-                fps: 10,
-                qrbox: 220
-            },
-            onScanSuccess
-        );
+    if (!devices || !devices.length) return;
+
+    let cameraId = devices[0].id;
+
+    // cerca camera posteriore
+    for (let device of devices) {
+        const label = device.label.toLowerCase();
+        if (
+            label.includes('back') ||
+            label.includes('rear') ||
+            label.includes('environment')
+        ) {
+            cameraId = device.id;
+            break;
+        }
     }
+
+    html5QrCode.start(
+        cameraId,
+        {
+            fps: 10,
+            qrbox: 220
+        },
+        onScanSuccess
+    );
 });
+
 </script>
 
 <script>

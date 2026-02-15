@@ -101,7 +101,7 @@ try {
   $gratta = null;
 
   $cfg = $pdo->query(
-    "SELECT nome,valore FROM impostazioni
+    "SELECT nome,valore FROM settings
      WHERE nome IN (
        'gratta_attivo',
        'gratta_probabilita',
@@ -309,7 +309,7 @@ try {
 
     $cfg = $pdo->query(
         "SELECT nome, valore
-         FROM impostazioni
+         FROM settings
          WHERE nome IN (
             'gratta_attivo',
             'gratta_probabilita',
