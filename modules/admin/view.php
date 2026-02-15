@@ -44,6 +44,9 @@ require ROOT_PATH . '/themes/semplice/header.php';
 
 <div class="main-actions">
   <a href="?mod=carte&azione=nuova" class="btn-nuova-carta">➕ Nuova carta</a>
+<a href="<?= BASE_URL ?>/?mod=clienti&azione=edit&id=0" class="btn-nuova-carta">
+    ➕ Nuovo cliente
+</a>
   <a href="?mod=premi" class="btn-nuova-carta">🎁 Gestione premi</a>
   <a href="?mod=admin&azione=impostazioni" class="btn-nuova-carta">⚙️ Impostazioni</a>
 </div>

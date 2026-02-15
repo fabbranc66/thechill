@@ -42,7 +42,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rigenera_qr'])) {
     header('Location: ' . BASE_URL . '/?mod=admin&tab=carte');
     exit;
 }
+/* ==========================================================
+   ELIMINAZIONE CARTA
+========================================================== */
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    if (!empty($_POST['del_carta'])) {
+
+        $id = (int)$_POST['del_carta'];
+
+        $stmt = $pdo->prepare(
+            "DELETE FROM carte_fedelta
+             WHERE id = ?"
+        );
+        $stmt->execute([$id]);
+
+        header('Location: ' . BASE_URL . '/?mod=admin&tab=carte');
+        exit;
+    }
+}
 /* ==========================================================
    LISTA CARTE
 ========================================================== */
@@ -64,12 +82,6 @@ $titolo = 'Carte fedeltà';
 ?>
 
 <h2>Carte fedeltà</h2>
-
-<a href="<?= BASE_URL ?>/?mod=carte&azione=nuova">
-    ➕ Nuova tessera
-</a>
-
-<br><br>
 
 <table border="1" cellpadding="8" cellspacing="0">
   <tr>
@@ -125,6 +137,11 @@ $titolo = 'Carte fedeltà';
             <input type="hidden" name="id" value="<?= $c['id'] ?>">
             <button type="submit">🔄</button>
         </form>
+        <!-- ELIMINA CARTA -->
+<form method="post" style="display:inline"
+      onsubmit="return confirm('Eliminare questa carta?')">
+    <button type="submit" name="del_carta" value="<?= $c['id'] ?>">🗑</button>
+</form>
       </td>
     </tr>
   <?php endforeach; ?>

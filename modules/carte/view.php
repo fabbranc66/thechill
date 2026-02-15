@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 richiedi_ruolo('amministratore');
 
-/* importante: actions deve essere caricato sempre */
+/* actions sempre caricato per gestire POST */
 require __DIR__ . '/actions.php';
 
 $azione = $_GET['azione'] ?? '';
@@ -11,7 +11,7 @@ $azione = $_GET['azione'] ?? '';
 switch ($azione) {
 
     case 'nuova':
-        require __DIR__ . '/actions.php';
+        require __DIR__ . '/nuova.php';
         break;
 
     case 'edit':

@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             QRcode::png($url, $file, QR_ECLEVEL_L, 6);
         }
 
-            header('Location: ' . BASE_URL . '/?mod=clienti');
+            header('Location: ' . BASE_URL . '/?mod=admin&tab=clienti');
             exit;
     }
 }
