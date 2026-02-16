@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crea_cliente'])) {
             mkdir($dir, 0755, true);
         }
 
-        $url = BASE_URL . '/?mod=clienti&azione=cliente_pubblico&t=' . $token;
+        $url = BASE_URL_FULL . '/?mod=clienti&azione=cliente_pubblico&t=' . $token;
         $file = $dir . $token . '.png';
 
         QRcode::png($url, $file, QR_ECLEVEL_L, 6);
