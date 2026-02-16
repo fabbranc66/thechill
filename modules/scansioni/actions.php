@@ -64,8 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['codice'])) {
 
         $pdo->commit();
 
-        /* redirect alla pagina cliente */
-        header('Location: ' . BASE_URL . '/?mod=clienti&azione=cliente&t=' . $carta['token_accesso']);
+        /* ritorna allo scanner con messaggio */
+        $msg = $carta['nome'] . ' +' . $punti_aggiunti . ' punto/i';
+        header('Location: ?mod=scansioni&vista=cassa&ok=' . urlencode($msg));
         exit;
 
     } catch (Throwable $e) {

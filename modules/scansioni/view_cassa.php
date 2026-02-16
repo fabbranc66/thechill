@@ -25,18 +25,6 @@ require ROOT_PATH . '/themes/semplice/header.php';
 
 <h2>Scanner QR</h2>
 
-<?php if (!empty($_GET['ok'])): ?>
-<div id="msg" style="color:green">
-    <?= htmlspecialchars($_GET['ok']) ?>
-</div>
-<?php endif; ?>
-
-<?php if (!empty($_GET['err'])): ?>
-<div id="msg" style="color:red">
-    <?= htmlspecialchars($_GET['err']) ?>
-</div>
-<?php endif; ?>
-
 <div id="scanner-wrapper">
     <div id="qr-reader"></div>
 </div>
@@ -44,6 +32,18 @@ require ROOT_PATH . '/themes/semplice/header.php';
 <form id="scan-form" method="post">
     <input type="hidden" name="codice" id="codice">
 </form>
+
+<?php if (!empty($_GET['ok'])): ?>
+<div class="alert alert-success" id="msg">
+    <?= htmlspecialchars($_GET['ok']) ?>
+</div>
+<?php endif; ?>
+
+<?php if (!empty($_GET['err'])): ?>
+<div class="alert alert-error" id="msg">
+    <?= htmlspecialchars($_GET['err']) ?>
+</div>
+<?php endif; ?>
 
 <script src="https://unpkg.com/html5-qrcode"></script>
 <script>
@@ -81,7 +81,6 @@ Html5Qrcode.getCameras().then(devices => {
         onScanSuccess
     );
 });
-
 </script>
 
 <script>
@@ -91,6 +90,28 @@ setTimeout(() => {
     if (msg) msg.style.display = 'none';
 }, 5000);
 </script>
+
+<style>
+.alert {
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 6px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.alert-success {
+    background: #e9f9ee;
+    border: 1px solid #2ecc71;
+    color: #1e7e34;
+}
+
+.alert-error {
+    background: #fdecea;
+    border: 1px solid #e74c3c;
+    color: #b02a1a;
+}
+</style>
 
 <?php
 require ROOT_PATH . '/themes/semplice/footer.php';

@@ -16,18 +16,20 @@ $scansioni = scansioni_lista($pdo);
 
 <table border="1" cellpadding="8" cellspacing="0">
   <tr>
-    <th>Cliente</th>
+    <th>Codice carta</th>
     <th>Punti</th>
-    <th>Origine</th>
     <th>Data</th>
     <th>Azioni</th>
   </tr>
 
   <?php foreach ($scansioni as $s): ?>
     <tr>
-      <td><?= htmlspecialchars($s['nome']) ?></td>
+      <td>
+        <a href="<?= BASE_URL ?>/?mod=carte&azione=edit&id=<?= $s['carta_id'] ?>">
+          <?= htmlspecialchars($s['codice_carta']) ?>
+        </a>
+      </td>
       <td><?= (int)$s['punti'] ?></td>
-      <td><?= htmlspecialchars($s['origine']) ?></td>
       <td><?= htmlspecialchars($s['data_scansione']) ?></td>
       <td>
         <form method="post" style="display:inline"

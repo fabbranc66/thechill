@@ -12,9 +12,6 @@ $utenti = clienti_lista($pdo);
 <table border="1" cellpadding="8" cellspacing="0">
   <tr>
     <th>Nome</th>
-    <th>Email</th>
-    <th>Telefono</th>
-    <th>QR</th>
     <th>Azioni</th>
   </tr>
 
@@ -24,35 +21,26 @@ $utenti = clienti_lista($pdo);
     ?>
     <tr>
       <td><?= htmlspecialchars($u['nome']) ?></td>
-      <td><?= htmlspecialchars($u['email']) ?></td>
-      <td><?= htmlspecialchars($u['telefono']) ?></td>
 
       <td>
+        <!-- Modifica cliente -->
+        <a href="<?= BASE_URL ?>/?mod=clienti&azione=edit&id=<?= $u['id'] ?>">✏️</a>
+
+        <!-- Apri pagina cliente -->
         <?php if (!empty($u['token_accesso'])): ?>
-          <img src="<?= BASE_URL ?>/assets/qr/<?= htmlspecialchars($u['token_accesso']) ?>.png"
-               width="60" alt="QR">
+          <a href="<?= BASE_URL ?>/?mod=clienti&azione=cliente&t=<?= $u['token_accesso'] ?>">🔗</a>
         <?php endif; ?>
+
+        <!-- Premi riscattati -->
+        <a href="<?= BASE_URL ?>/?mod=riscatti&azione=cliente&id=<?= $u['id'] ?>">🧾</a>
+
+        <!-- Elimina cliente -->
+        <form method="post" style="display:inline"
+              onsubmit="return confirm('Eliminare cliente?')">
+          <input type="hidden" name="del_cliente" value="<?= $u['id'] ?>">
+          <button>🗑</button>
+        </form>
       </td>
-
-<td>
-  <!-- Modifica cliente -->
-  <a href="<?= BASE_URL ?>/?mod=clienti&azione=edit&id=<?= $u['id'] ?>">✏️</a>
-
-  <!-- Apri pagina cliente -->
-  <?php if (!empty($u['token_accesso'])): ?>
-    <a href="<?= BASE_URL ?>/?mod=clienti&azione=cliente&t=<?= $u['token_accesso'] ?>">🔗</a>
-  <?php endif; ?>
-
-  <!-- Premi riscattati -->
-  <a href="<?= BASE_URL ?>/?mod=riscatti&azione=cliente&id=<?= $u['id'] ?>">🧾</a>
-
-  <!-- Elimina cliente -->
-  <form method="post" style="display:inline"
-        onsubmit="return confirm('Eliminare cliente?')">
-    <input type="hidden" name="del_cliente" value="<?= $u['id'] ?>">
-    <button>🗑</button>
-  </form>
-</td>
     </tr>
   <?php endforeach; ?>
 </table>

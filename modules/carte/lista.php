@@ -85,33 +85,18 @@ $titolo = 'Carte fedeltà';
 
 <table border="1" cellpadding="8" cellspacing="0">
   <tr>
-    <th>Cliente</th>
-    <th>Email</th>
     <th>Codice carta</th>
     <th>Punti</th>
-    <th>QR</th>
     <th>Azioni</th>
   </tr>
 
   <?php foreach ($carte as $c): ?>
     <?php
-      /* link cliente interno al sistema */
       $link_cliente = BASE_URL . '/?mod=clienti&azione=cliente&t=' . $c['token_accesso'];
     ?>
     <tr>
-      <td><?= htmlspecialchars($c['nome']) ?></td>
-      <td><?= htmlspecialchars($c['email']) ?></td>
       <td><?= htmlspecialchars($c['codice_carta']) ?></td>
       <td><?= (int)$c['punti'] ?></td>
-
-      <td>
-        <?php if (!empty($c['token_accesso'])): ?>
-          <a href="<?= $link_cliente ?>">
-            <img src="<?= BASE_URL ?>/assets/qr/<?= htmlspecialchars($c['token_accesso']) ?>.png"
-                 width="60" alt="QR">
-          </a>
-        <?php endif; ?>
-      </td>
 
       <td>
         <!-- EDIT CARTA -->
@@ -137,11 +122,12 @@ $titolo = 'Carte fedeltà';
             <input type="hidden" name="id" value="<?= $c['id'] ?>">
             <button type="submit">🔄</button>
         </form>
+
         <!-- ELIMINA CARTA -->
-<form method="post" style="display:inline"
-      onsubmit="return confirm('Eliminare questa carta?')">
-    <button type="submit" name="del_carta" value="<?= $c['id'] ?>">🗑</button>
-</form>
+        <form method="post" style="display:inline"
+              onsubmit="return confirm('Eliminare questa carta?')">
+            <button type="submit" name="del_carta" value="<?= $c['id'] ?>">🗑</button>
+        </form>
       </td>
     </tr>
   <?php endforeach; ?>
