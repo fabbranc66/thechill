@@ -9,7 +9,7 @@ declare(strict_types=1);
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet"
-      href="<?= BASE_URL ?>/themes/tables-v2/style.css">
+      href="<?= BASE_URL ?>/themes/tavoli/style.css">
 </head>
 <body>
 

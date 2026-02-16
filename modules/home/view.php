@@ -45,10 +45,9 @@ require ROOT_PATH . '/themes/semplice/header.php';
 ======================================================= -->
 <section class="main-actions">
 
-     <a href="<?= BASE_URL ?>/?mod=prenota" class="btn-nuova-carta">
-          🪑 Tavoli<br>
-          <span>Guarda disponibilità e prenota</span>
-     </a>
+<a href="<?= BASE_URL ?>/?mod=tavoli" class="btn-nuova-carta">
+    Prenota tavolo
+</a>
 
      <a href="<?= BASE_URL ?>/?mod=eventi" class="btn-nuova-carta">
           🎶 Eventi<br>

@@ -47,7 +47,9 @@ require ROOT_PATH . '/themes/semplice/header.php';
   <a href="<?= BASE_URL ?>/?mod=clienti&azione=edit&id=0" class="btn-nuova-carta">
       ➕ Nuovo cliente
   </a>
-
+    <a href="<?= BASE_URL ?>/?mod=tavoli" class="btn-nuova-carta">
+    🪑 Tavoli
+    </a>
   <?php
   $scanner_desktop = $SETTINGS['scanner_desktop'] ?? '0';
 

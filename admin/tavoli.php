@@ -27,7 +27,7 @@ require __DIR__ . '/../themes/semplice/header.php';
 /* ==========================================================
    CONFIG
 ========================================================== */
-const API_URL = '<?= BASE_URL ?>/modules/tables-v2/api/tavoli_list.php';
+const API_URL = '<?= BASE_URL ?>/modules/tavoli/api/tavoli_list.php';
 
 /* ==========================================================
    RENDER TAVOLI

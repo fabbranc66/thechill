@@ -1,0 +1,10 @@
+{
+  "nome": "Tavoli",
+  "slug": "tavoli",
+  "descrizione": "Gestione tavoli e prenotazioni",
+  "versione": "1.0",
+  "autore": "TheChill",
+  "attivo": 1,
+  "visibile_menu": 1,
+  "ruolo": "amministratore"
+}

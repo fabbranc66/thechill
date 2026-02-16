@@ -69,6 +69,11 @@ if (
 
 $titolo = 'Impostazioni ambiente';
 require ROOT_PATH . '/themes/semplice/header.php';
+
+/* ===============================
+   MAPPA TAVOLI
+================================ */
+$mappa = $SETTINGS['tavoli_mappa'] ?? '';
 ?>
 
 <h2>⚙️ Impostazioni ambiente</h2>
@@ -99,56 +104,6 @@ require ROOT_PATH . '/themes/semplice/header.php';
     </td>
   </tr>
 
-  <!-- LOGO -->
-  <tr>
-    <td>Logo sito</td>
-    <td>
-      <form method="post" enctype="multipart/form-data" class="inline-form">
-        <input type="hidden" name="upload" value="logo">
-
-        <div class="field-inline">
-          <input type="file" name="file" accept="image/*">
-
-          <?php if (!empty($SETTINGS['logo'])): ?>
-            <img
-              src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($SETTINGS['logo']) ?>"
-              class="preview preview-logo"
-              alt="Logo"
-            >
-          <?php endif; ?>
-        </div>
-    </td>
-    <td>
-        <button type="submit">💾 Carica</button>
-      </form>
-    </td>
-  </tr>
-
-  <!-- FAVICON -->
-  <tr>
-    <td>Favicon</td>
-    <td>
-      <form method="post" enctype="multipart/form-data" class="inline-form">
-        <input type="hidden" name="upload" value="favicon">
-
-        <div class="field-inline">
-          <input type="file" name="file" accept=".ico,.png,.svg">
-
-          <?php if (!empty($SETTINGS['favicon'])): ?>
-            <img
-              src="<?= BASE_URL ?>/assets/img/<?= htmlspecialchars($SETTINGS['favicon']) ?>"
-              class="preview preview-favicon"
-              alt="Favicon"
-            >
-          <?php endif; ?>
-        </div>
-    </td>
-    <td>
-        <button type="submit">💾 Carica</button>
-      </form>
-    </td>
-  </tr>
-
   <!-- SCANNER DA DESKTOP -->
   <tr>
     <td>Scanner da PC/Tablet</td>
@@ -171,8 +126,8 @@ require ROOT_PATH . '/themes/semplice/header.php';
       </form>
     </td>
   </tr>
-</table>
 
+</table>
 <?php
 /* ===============================
    ALTRE IMPOSTAZIONI DINAMICHE
@@ -180,7 +135,7 @@ require ROOT_PATH . '/themes/semplice/header.php';
 $stmt = $pdo->query(
   "SELECT nome, valore
    FROM settings
-   WHERE nome NOT IN ('site_name','logo','favicon','scanner_desktop')
+   WHERE nome NOT IN ('site_name','logo','favicon','scanner_desktop','tavoli_mappa')
    ORDER BY nome"
 );
 $altre = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -214,60 +169,144 @@ $altre = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <?php endforeach; ?>
 </table>
 <?php endif; ?>
+<!-- ======================================================
+     EDITOR GRAFICO MAPPA TAVOLI
+====================================================== -->
+
+<h3 style="margin-top:30px">🪑 Mappa tavoli (drag & drop)</h3>
+
+<div id="editor-mappa"></div>
+
+<form method="post" style="margin-top:15px">
+  <input type="hidden" name="key" value="tavoli_mappa">
+  <textarea id="mappa-json" name="value"
+    style="width:100%;height:120px;font-family:monospace"></textarea>
+  <button type="submit" style="margin-top:10px">💾 Salva mappa</button>
+</form>
 
 <style>
-.settings-table {
+#editor-mappa {
+  position: relative;
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
+  max-width: 700px;
+  height: 420px;
+  border: 2px dashed #ccc;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      #f9f9f9,
+      #f9f9f9 68px,
+      #eaeaea 69px,
+      #eaeaea 70px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      #f9f9f9,
+      #f9f9f9 68px,
+      #eaeaea 69px,
+      #eaeaea 70px
+    );
+  margin: 10px 0;
+  border-radius: 10px;
 }
 
-.settings-table th,
-.settings-table td {
-  border-bottom: 1px solid #ddd;
-  padding: 10px;
-  vertical-align: middle;
-}
-
-.settings-table th {
-  text-align: left;
-  background: #f5f5f5;
-}
-
-.settings-table form {
-  margin: 0;
-}
-
-.settings-table button {
-  padding: 6px 10px;
-}
-
-.field-inline {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.preview {
-  max-height: 28px;
-  width: auto;
-  object-fit: contain;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: zoom-in;
-}
-
-.preview:hover {
-  transform: scale(2.2);
-  background: #fff;
-  padding: 6px;
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-}
-
-.preview-favicon:hover {
-  transform: scale(3);
+.tavolo-box {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: #0b3d2e;
+  color: #fff;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 60px;
+  font-weight: bold;
+  cursor: grab;
+  user-select: none;
 }
 </style>
+
+<script>
+const GRID = 70;
+const OFFSET = 10;
+
+const mappa = <?= $mappa ?: '{}' ?>;
+const editor = document.getElementById('editor-mappa');
+
+function creaTavolo(id, x, y) {
+  const el = document.createElement('div');
+  el.className = 'tavolo-box';
+  el.textContent = id;
+  el.dataset.id = id;
+  setPos(el, x, y);
+
+  let offsetX, offsetY, dragging = false;
+
+  el.addEventListener('mousedown', e => {
+    dragging = true;
+    offsetX = e.offsetX;
+    offsetY = e.offsetY;
+    el.style.cursor = 'grabbing';
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false;
+    el.style.cursor = 'grab';
+
+    const x = Math.round((el.offsetLeft - OFFSET) / GRID);
+    const y = Math.round((el.offsetTop - OFFSET) / GRID);
+    setPos(el, x, y);
+
+    salvaJson();
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+
+    const rect = editor.getBoundingClientRect();
+    let x = e.clientX - rect.left - offsetX;
+    let y = e.clientY - rect.top - offsetY;
+
+    el.style.left = x + 'px';
+    el.style.top  = y + 'px';
+  });
+
+  editor.appendChild(el);
+}
+
+function setPos(el, x, y) {
+  el.style.left = (x * GRID + OFFSET) + 'px';
+  el.style.top  = (y * GRID + OFFSET) + 'px';
+}
+
+function salvaJson() {
+  const tavoli = {};
+  document.querySelectorAll('.tavolo-box').forEach(el => {
+    const id = el.dataset.id;
+    const x = Math.round((el.offsetLeft - OFFSET) / GRID);
+    const y = Math.round((el.offsetTop - OFFSET) / GRID);
+    tavoli[id] = {x, y};
+  });
+
+  document.getElementById('mappa-json').value =
+    JSON.stringify(tavoli, null, 2);
+}
+
+/* inizializzazione */
+if (Object.keys(mappa).length === 0) {
+  for (let i = 1; i <= 20; i++) {
+    const x = (i - 1) % 5;
+    const y = Math.floor((i - 1) / 5);
+    creaTavolo(i, x, y);
+  }
+} else {
+  for (let id in mappa) {
+    creaTavolo(id, mappa[id].x, mappa[id].y);
+  }
+}
+
+salvaJson();
+</script>
 
 <?php
 require ROOT_PATH . '/themes/semplice/footer.php';

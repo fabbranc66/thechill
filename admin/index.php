@@ -194,7 +194,7 @@ require __DIR__ . '/../themes/semplice/header.php';
   <a href="scanner.php" class="btn-nuova-carta">📷 Scansiona</a>
 <?php endif; ?>
 
-  <a href="<?= BASE_URL ?>/modules/tables-v2/index.php" class="btn-nuova-carta">
+  <a href="<?= BASE_URL ?>/modules/tavoli/index.php" class="btn-nuova-carta">
     🪑 Gestione tavoli
   </a>
 </div>
