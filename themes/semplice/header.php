@@ -96,12 +96,17 @@ declare(strict_types=1);
     <!-- ====================================================
          NAVIGAZIONE
          ==================================================== -->
+<?php
+$mod = $_GET['mod'] ?? '';
+$azione = $_GET['azione'] ?? '';
+$pagina_cliente_pubblica = ($mod === 'clienti' && $azione === 'cliente');
+?>
 <nav class="nav">
-  <?php if (empty($_SESSION['utente'])): ?>
+  <?php if (empty($_SESSION['utente']) && !$pagina_cliente_pubblica): ?>
 
     <a href="<?= BASE_URL ?>/?mod=login">Accedi</a>
 
-  <?php else: ?>
+  <?php elseif (!empty($_SESSION['utente'])): ?>
 
     <?php if ($_SESSION['utente']['ruolo'] === 'amministratore'): ?>
       <a href="<?= BASE_URL ?>/?mod=admin">Dashboard</a>

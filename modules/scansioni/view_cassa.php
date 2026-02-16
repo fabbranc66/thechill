@@ -55,11 +55,15 @@ function onScanSuccess(decodedText) {
 const html5QrCode = new Html5Qrcode("qr-reader");
 
 Html5Qrcode.getCameras().then(devices => {
-    if (!devices || !devices.length) return;
+
+    if (!devices || !devices.length) {
+        alert("Nessuna fotocamera trovata");
+        return;
+    }
 
     let cameraId = devices[0].id;
 
-    // cerca camera posteriore
+    // forza camera posteriore
     for (let device of devices) {
         const label = device.label.toLowerCase();
         if (
@@ -73,7 +77,7 @@ Html5Qrcode.getCameras().then(devices => {
     }
 
     html5QrCode.start(
-        cameraId,
+        { facingMode: "environment" }, // forza posteriore
         {
             fps: 10,
             qrbox: 220
@@ -81,6 +85,7 @@ Html5Qrcode.getCameras().then(devices => {
         onScanSuccess
     );
 });
+
 </script>
 
 <script>

@@ -26,6 +26,37 @@ if ($host === '' && PHP_SAPI === 'cli') {
 }
 
 /* =====================================================
+   RILEVA AMBIENTE
+===================================================== */
+$host = $_SERVER['HTTP_HOST'] ?? '';
+
+$isLocalhost =
+    $host === 'localhost' ||
+    $host === '127.0.0.1' ||
+    $host === '192.168.1.20';
+
+/* =====================================================
+   CONFIGURAZIONE DATABASE
+===================================================== */
+if ($isLocalhost) {
+
+    /* ===== LOCALE (XAMPP) ===== */
+    $db_host    = '127.0.0.1';
+    $db_name    = 'Sql1874742_5';
+    $db_user    = 'root';
+    $db_pass    = '';
+    $db_charset = 'utf8mb4';
+
+} else {
+
+    /* ===== PRODUZIONE ===== */
+    $db_host    = '31.11.39.231';
+    $db_name    = 'Sql1874742_5';
+    $db_user    = 'Sql1874742';
+    $db_pass    = '@GenniH264rgnm';
+    $db_charset = 'utf8mb4';
+}
+/* =====================================================
    CONFIGURAZIONE DATABASE
 ===================================================== */
 if ($isLocalhost) {
