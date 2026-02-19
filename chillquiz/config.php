@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+/* DISABILITA CACHE */
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0");
+
 /*
 CONFIGURAZIONE AUTOMATICA:
 - Locale → DB locale
@@ -24,10 +30,10 @@ if (
 
 /* CONFIG ARUBA */
 else {
-    $host = '31.11.39.231';
-    $db   = 'Sql1874742_4';
-    $user = 'Sql1874742';
-    $pass = '@GenniH264rgnm';
+    $host = "31.11.39.231";
+    $db   = "Sql1874742_4";
+    $user = "Sql1874742";
+    $pass = "@GenniH264rgnm";
 }
 
 /* CONNESSIONE */

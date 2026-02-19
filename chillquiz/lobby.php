@@ -65,17 +65,44 @@ button {
     background: #ff3355;
     color: white;
 }
+.nome-fisso {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 15px 0;
+}
 </style>
 </head>
 <body>
 
 <div class="box">
+
+<?php if (isset($_SESSION["nome_cliente"])): ?>
+
+    <h2>Benvenuto</h2>
+    <div class="nome-fisso">
+        <?php echo htmlspecialchars($_SESSION["nome_cliente"]); ?>
+    </div>
+
+    <form method="post">
+        <input type="hidden" name="nome" value="<?php echo htmlspecialchars($_SESSION["nome_cliente"]); ?>">
+        <button type="submit">Entra nel quiz</button>
+    </form>
+
+    <script>
+        document.forms[0].submit();
+    </script>
+
+<?php else: ?>
+
     <h2>Inserisci il tuo nome</h2>
 
     <form method="post">
         <input type="text" name="nome" placeholder="Il tuo nome" required>
         <button type="submit">Entra nel quiz</button>
     </form>
+
+<?php endif; ?>
+
 </div>
 
 </body>

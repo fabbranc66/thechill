@@ -210,13 +210,19 @@ require $theme_path . 'header.php';
 
 
 <div class="client-actions">
-<a class="btn-azione"
-   href="<?= BASE_URL ?>/?mod=tavoli&public=1&t=<?= urlencode($_GET['t'] ?? '') ?>">
-  🍽 Prenotazione tavolo
-</a>
+    <a class="btn-azione"
+       href="<?= BASE_URL ?>/?mod=tavoli&public=1&t=<?= urlencode($_GET['t'] ?? '') ?>">
+      🍽 Prenotazione tavolo
+    </a>
+
     <a href="#">🧾 Ordina</a>
+
     <a href="#">🎉 Prenotazione eventi</a>
-    <a href="#">🎮 Prenotazione game</a>
+
+<a class="btn-azione"
+   href="<?= BASE_URL ?>/chillquiz/?nome=<?= urlencode($cliente['nome']) ?>">
+  🎮 Prenotazione game
+</a>
 </div>
 
 <?php
