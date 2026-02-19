@@ -4,10 +4,39 @@ namespace Applicazione\Modello;
 
 use Applicazione\Nucleo\Database;
 
-class ConfigurazioneSistema {
+/*
+|--------------------------------------------------------------------------
+| MODELLO CONFIGURAZIONE SISTEMA
+|--------------------------------------------------------------------------
+| Responsabilità:
+| - Lettura configurazioni globali
+| - Scrittura configurazioni
+| - Recupero elenco completo configurazioni
+|--------------------------------------------------------------------------
+|
+| Tabella utilizzata:
+| configurazioni
+|  - chiave
+|  - valore
+|  - descrizione
+|--------------------------------------------------------------------------
+*/
 
-    public static function get($chiave) {
+class ConfigurazioneSistema
+{
 
+    /*
+    |--------------------------------------------------------------------------
+    | BLOCCO 1 — Recupero singola configurazione
+    |--------------------------------------------------------------------------
+    | Metodo: get($chiave)
+    |
+    | Restituisce il valore associato alla chiave.
+    | Se la chiave non esiste → ritorna null.
+    |--------------------------------------------------------------------------
+    */
+    public static function get($chiave)
+    {
         $conn = Database::connessione();
 
         $stmt = $conn->prepare("
@@ -25,8 +54,19 @@ class ConfigurazioneSistema {
         return $res ? $res['valore'] : null;
     }
 
-    public static function set($chiave, $valore) {
 
+    /*
+    |--------------------------------------------------------------------------
+    | BLOCCO 2 — Aggiornamento configurazione
+    |--------------------------------------------------------------------------
+    | Metodo: set($chiave, $valore)
+    |
+    | Aggiorna il valore di una chiave esistente.
+    | Ritorna true/false in base all'esito dell'execute().
+    |--------------------------------------------------------------------------
+    */
+    public static function set($chiave, $valore)
+    {
         $conn = Database::connessione();
 
         $stmt = $conn->prepare("
@@ -36,11 +76,26 @@ class ConfigurazioneSistema {
         ");
 
         $stmt->bind_param("ss", $valore, $chiave);
+
         return $stmt->execute();
     }
 
-    public static function tutte() {
 
+    /*
+    |--------------------------------------------------------------------------
+    | BLOCCO 3 — Recupero tutte le configurazioni
+    |--------------------------------------------------------------------------
+    | Metodo: tutte()
+    |
+    | Restituisce array associativo completo:
+    | [
+    |   { chiave, valore, descrizione },
+    |   ...
+    | ]
+    |--------------------------------------------------------------------------
+    */
+    public static function tutte()
+    {
         $conn = Database::connessione();
 
         $res = $conn->query("
