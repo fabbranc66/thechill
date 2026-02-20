@@ -1,0 +1,101 @@
+/* ------------------------------
+   BACKGROUND ANIMATO
+------------------------------ */
+
+.background {
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 30%, #2d2f8f, #1e1f4f);
+    animation: moveBg 10s infinite alternate ease-in-out;
+    z-index: -1;
+}
+
+@keyframes moveBg {
+    0% { transform: translate(0,0); }
+    100% { transform: translate(-10%, -10%); }
+}
+
+/* ------------------------------
+   PIN CENTRALE
+------------------------------ */
+
+.pin-container {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.pin-label {
+    font-size: 24px;
+    opacity: 0.7;
+}
+
+.pin-value {
+    font-size: 120px;
+    font-weight: bold;
+    letter-spacing: 10px;
+}
+
+/* ------------------------------
+   QR
+------------------------------ */
+
+.qr-container {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.qr-container img {
+    width: 200px;
+    height: 200px;
+    background: white;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+/* ------------------------------
+   GIOCATORI
+------------------------------ */
+
+.giocatori {
+    margin-top: 60px;
+    text-align: center;
+}
+
+.giocatori h2 {
+    margin-bottom: 20px;
+}
+
+.lista-giocatori {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.giocatore {
+    background: rgba(255,255,255,0.15);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 18px;
+}
+.griglia {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 150px 150px;
+    gap: 12px;
+    margin-top: 40px;
+}
+
+.risposta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    border-radius: 15px;
+}
+
+.rosso { background: #e21b3c; }
+.blu { background: #1368ce; }
+.giallo { background: #d89e00; }
+.verde { background: #26890c; }

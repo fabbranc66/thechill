@@ -55,8 +55,54 @@ class Partita
         $this->dati = $stmt->get_result()->fetch_assoc();
     }
 
+/*
+|--------------------------------------------------------------------------
+| BLOCCO — Recupera partita attiva
+|--------------------------------------------------------------------------
+| Ritorna oggetto Partita con stato attesa/domanda/risultati
+|--------------------------------------------------------------------------
+*/
+public static function attiva()
+{
+    $conn = \Applicazione\Nucleo\Database::connessione();
 
-    /*
+    $res = $conn->query("
+        SELECT id
+        FROM partite
+        WHERE stato IN ('attesa','domanda','risultati')
+        ORDER BY id DESC
+        LIMIT 1
+    ");
+
+    $row = $res->fetch_assoc();
+
+    if (!$row) {
+        return null;
+    }
+
+    return new self($row['id']);
+}
+    
+/*
+|--------------------------------------------------------------------------
+| BLOCCO — Getter ID partita
+|--------------------------------------------------------------------------
+*/
+public function id()
+{
+    return $this->id;
+}
+
+/*
+|--------------------------------------------------------------------------
+| BLOCCO — Getter PIN partita
+|--------------------------------------------------------------------------
+*/
+public function pin()
+{
+    return $this->dati['pin'] ?? null;
+}
+/*
     |--------------------------------------------------------------------------
     | BLOCCO 3 — Registrazione risposta giocatore
     |--------------------------------------------------------------------------

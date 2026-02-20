@@ -75,8 +75,23 @@ class Router
                 $controller->index();
                 break;
 
+            case 'admin':
+                $controller = new \Applicazione\Controller\AdminController();
 
-            /*
+                if (($segmenti[1] ?? '') === 'configurazioni') {
+                    $controller->configurazioni();
+                    break;
+                }
+
+                if (($segmenti[1] ?? '') === 'game') {
+                    $controller->game();
+                    break;
+                }
+
+                // fallback admin
+                echo "Sezione admin";
+                break;
+                /*
             |--------------------------------------------------------------------------
             | ROUTE: api
             |--------------------------------------------------------------------------
@@ -109,7 +124,10 @@ class Router
                 }
                 break;
 
-
+            case 'giocatore_game':
+                $controller = new \Applicazione\Controller\GiocatoreController();
+                $controller->game();
+                break;            
             /*
             |--------------------------------------------------------------------------
             | DEFAULT ROUTE
